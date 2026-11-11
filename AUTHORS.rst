@@ -76,6 +76,7 @@ The following organizations or individuals have contributed to ScanCode:
 - Richard Menzies @WizardOhio24
 - Ritiek Malhotra @ritiek
 - Rohit Potter @rpotter12
+- Rohit Sutar @RohitSutar1823
 - Sankha Das @sankha555
 - Saravanan G @SaravananOffl
 - Sarita Singh @itssingh

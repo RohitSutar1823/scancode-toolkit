@@ -26,6 +26,12 @@ Next release
   ``ValueError: did not find any 'pre_scan' hooks``.
   https://github.com/aboutcode-org/scancode-toolkit/issues/5363
 
+- Fix yarn.lock v1 parsing of a scoped alias of an unscoped package, such as
+  ``"@jest/react-is-18@npm:react-is@^18.3.1"``. This previously raised an
+  ``AssertionError`` that silently dropped all the packages of the lockfile.
+  The aliased package is now reported without the namespace of its alias.
+  https://github.com/aboutcode-org/scancode-toolkit/issues/5466
+
 v33.0.0rc1 - 2026-05-14
 ------------------------
 

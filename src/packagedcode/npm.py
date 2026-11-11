@@ -1059,18 +1059,23 @@ class YarnLockV1Handler(BaseNpmHandler):
                     requirements = [r.strip().strip("\"'") for r in requirements]
                     for req in requirements:
                         if req.startswith('@'):
-                            # 2 = package, 4 = alias
-                            assert req.count('@') in [2, 4]
+                            # 2 = scoped package
+                            # 3 = scoped alias of an unscoped package:
+                            #     @scope/alias@npm:package@^1
+                            # 4 = scoped alias of a scoped package:
+                            #     @scope/alias@npm:@scope/package@^1
+                            assert req.count('@') in [2, 3, 4]
 
                         ns_name, _, constraint = req.rpartition('@')
-                        ns, _ , name = ns_name.rpartition('/')
                         constraint = constraint.strip("\"'")
                         # If we have an alias, just keep the package part:
                         # <alias-package>@npm:<package>
-                        if "@npm:" in ns:
-                            ns = ns.split(':')[1]
-                        if "@npm:" in name:
-                            name = name.split(':')[1]
+                        # This must be done before splitting the namespace from the
+                        # name, otherwise the scope of a scoped alias leaks as the
+                        # namespace of an unscoped aliased package.
+                        if "@npm:" in ns_name:
+                            _alias, _, ns_name = ns_name.partition("@npm:")
+                        ns, _, name = ns_name.rpartition('/')
                         top_requirements.append((ns, name, constraint,))
 
                 else:
